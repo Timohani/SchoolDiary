@@ -2,13 +2,16 @@ package com.timohani.schooldiary.database.entity;
 
 import com.timohani.schooldiary.database.entity.enums.Role;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+@Entity
+@Table(name = "users")
 
 @Getter
 @Setter
-@Entity
-@Table(name = "users")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
