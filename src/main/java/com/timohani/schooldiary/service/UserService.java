@@ -2,15 +2,18 @@ package com.timohani.schooldiary.service;
 
 import com.timohani.schooldiary.database.entity.User;
 import com.timohani.schooldiary.database.repository.UserRepository;
-import com.timohani.schooldiary.dto.UserCreateDto;
-import com.timohani.schooldiary.dto.UserReadDto;
-import com.timohani.schooldiary.mapper.UserCreateMapper;
-import com.timohani.schooldiary.mapper.UserReadMapper;
+import com.timohani.schooldiary.dto.user.UserCreateDto;
+import com.timohani.schooldiary.dto.user.UserReadDto;
+import com.timohani.schooldiary.mapper.user.UserCreateMapper;
+import com.timohani.schooldiary.mapper.user.UserReadMapper;
 import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
 
@@ -25,7 +28,13 @@ public class UserService {
             throw new EntityExistsException(exceptionMessage);
         }
 
-        User createdUser = userRepository.save(userCreateMapper.mapTo(createDto));
-        return userReadMapper.mapTo(createdUser);
+        User createdUser = userRepository.save(userCreateMapper.map(createDto));
+        return userReadMapper.map(createdUser);
+    }
+
+    public UserReadDto findById(Long id) {
+        String exceptionMessage = "User with id:" + id + " not found";
+        User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(exceptionMessage));
+        return userReadMapper.map(user);
     }
 }

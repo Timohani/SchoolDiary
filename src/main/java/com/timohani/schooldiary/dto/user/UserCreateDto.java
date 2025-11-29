@@ -1,14 +1,10 @@
-package com.timohani.schooldiary.dto;
+package com.timohani.schooldiary.dto.user;
 
 import com.timohani.schooldiary.database.entity.enums.Role;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-public class UserReadDto {
-
-    private Long id;
+public class UserCreateDto {
 
     private String firstname;
 

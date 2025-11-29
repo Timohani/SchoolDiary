@@ -3,12 +3,17 @@ package com.timohani.schooldiary.database.entity;
 import com.timohani.schooldiary.database.entity.enums.GradeValue;
 import com.timohani.schooldiary.database.entity.enums.Subject;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Entity
 
 @Getter
 @Setter
-@Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,4 +29,7 @@ public class Grade {
 
     @ManyToOne
     private User student;
+
+    @Column(nullable = false)
+    private LocalDateTime dateTime;
 }
