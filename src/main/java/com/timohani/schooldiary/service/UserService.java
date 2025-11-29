@@ -1,6 +1,7 @@
 package com.timohani.schooldiary.service;
 
 import com.timohani.schooldiary.database.entity.User;
+import com.timohani.schooldiary.database.entity.enums.Role;
 import com.timohani.schooldiary.database.repository.UserRepository;
 import com.timohani.schooldiary.dto.user.UserCreateDto;
 import com.timohani.schooldiary.dto.user.UserReadDto;
@@ -11,6 +12,9 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -24,7 +28,7 @@ public class UserService {
     public UserReadDto createUser(UserCreateDto createDto) {
 
         if (userRepository.findByFirstnameAndLastname(createDto.getFirstname(), createDto.getLastname()).isPresent()) {
-            String exceptionMessage = "User with firstname:" + createDto.getFirstname() + " and lastname: " + createDto.getLastname() + " already exists.";
+            String exceptionMessage = "User with firstname: " + createDto.getFirstname() + " and lastname: " + createDto.getLastname() + " already exists.";
             throw new EntityExistsException(exceptionMessage);
         }
 
@@ -33,8 +37,24 @@ public class UserService {
     }
 
     public UserReadDto findById(Long id) {
-        String exceptionMessage = "User with id:" + id + " not found";
+        String exceptionMessage = "User with id: " + id + " not found";
         User user = userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(exceptionMessage));
         return userReadMapper.map(user);
+    }
+
+    public UserReadDto findByUsername(String username) {
+        String exceptionMessage = "User with username: " + username + " not found";
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException(exceptionMessage));
+        return userReadMapper.map(user);
+    }
+
+    public List<UserReadDto> findAllBySchoolClass(String schoolClass) {
+        List<User> users = userRepository.findAllByRoleAndSchoolClass(Role.STUDENT, schoolClass);
+
+        List<UserReadDto> userReadDtoList = new ArrayList<>();
+        for (User user : users) {
+            userReadDtoList.add(userReadMapper.map(user));
+        }
+        return userReadDtoList;
     }
 }

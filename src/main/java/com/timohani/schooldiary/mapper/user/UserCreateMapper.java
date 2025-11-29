@@ -11,9 +11,11 @@ public class UserCreateMapper implements Mapper<UserCreateDto, User> {
     @Override
     public User map(UserCreateDto from) {
         return User.builder()
+                .username(from.getUsername())
                 .firstname(from.getFirstname())
                 .lastname(from.getLastname())
                 .role(from.getRole())
+                .schoolClass(from.getSchoolClass())
                 .build();
     }
 

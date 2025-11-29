@@ -10,9 +10,13 @@ public class UserReadDto {
 
     private Long id;
 
+    private String username;
+
     private String firstname;
 
     private String lastname;
 
     private Role role;
+
+    private String schoolClass;
 }

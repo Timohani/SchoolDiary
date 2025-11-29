@@ -18,6 +18,9 @@ public class User {
     @Column(nullable = false)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String username;
+
     @Column(nullable = false)
     private String firstname;
 
@@ -27,4 +30,6 @@ public class User {
     @Enumerated
     @Column(nullable = false)
     private Role role;
+
+    private String schoolClass;
 }
